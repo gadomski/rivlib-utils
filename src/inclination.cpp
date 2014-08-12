@@ -1,6 +1,7 @@
 #include <riegl/scanlib.hpp>
 
-
+#include <iomanip>
+#include <iostream>
 
 
 class Inclination : public scanlib::pointcloud
@@ -14,9 +15,16 @@ public:
 
 protected:
 
-    void on_inclination_wyler(const scanlib::inclination_wyler<iterator_type>& arg)
+    void on_hk_incl(const scanlib::hk_incl<iterator_type>& arg)
     {
-        std::cout << "Here" << std::endl;
+        float roll(arg.ROLL * 0.001);
+        float pitch(arg.PITCH * 0.001);
+        std::cout
+            << std::setprecision(4)
+            << time << ","
+            << std::setprecision(3)
+            << roll << ","
+            << pitch << std::endl;
     }
 
 };
@@ -39,6 +47,8 @@ int main(int argc, char* argv[])
         Inclination inc;
         scanlib::buffer buf;
 
+        std::cout << "Time,Roll,Pitch" << std::endl;
+        std::cout << std::fixed;
         for (dec.get(buf); !dec.eoi(); dec.get(buf))
         {
             inc.dispatch(buf.begin(), buf.end());
