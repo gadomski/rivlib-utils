@@ -11,24 +11,32 @@ filenames <- c(
                "EastWall/140123_180026_inclination.txt",
                "EastWall/140201_205741_inclination.txt")
 
-getInclinations <- function(filename)
+getInclinations <- function(filename, referenceDistance=0)
 {
-    return(read.csv(paste0("~/Code/rivlib-development/data/", filename)))
-}
-
-massageInclinations <- function(inclinations)
-{
+    inclinations = read.csv(paste0("~/Code/rivlib-development/data/", filename))
     inclinations <- inclinations[inclinations$Time > 0,]
     means <- colMeans(inclinations[1:10,])
     inclinations["Roll"] <- inclinations["Roll"] - means["Roll"]
     inclinations["Pitch"] <- inclinations["Pitch"] - means["Pitch"]
-    inclinations["Distance"] <- sqrt(inclinations["Roll"] ^ 2 + inclinations["Pitch"] ^ 2)
-    return(melt(inclinations, id="Time", value.name = "Degrees"))
+    if (referenceDistance > 0)
+    {
+        inclinations[c("Roll", "Pitch")] = referenceDistance * tan(inclinations[c("Roll", "Pitch")] * pi / 180)
+    }
+    inclinations["Magnitude"] <- sqrt(inclinations["Roll"] ^ 2 + inclinations["Pitch"] ^ 2)
+    return(inclinations)
 }
 
-getMassagedInclinations <- function(filename)
+getMassagedInclinations <- function(filename, referenceDistance=0)
 {
-    return(massageInclinations(getInclinations(filename)))
+    inclinations = getInclinations(filename, referenceDistance)
+    if (referenceDistance > 0)
+    {
+        return(melt(inclinations, id="Time", value.name="Error"))
+    }
+    else
+    {
+        return(melt(inclinations, id="Time", value.name="Degrees"))
+    }
 }
 
 plotInclinations <- function(filename)
@@ -42,6 +50,19 @@ plotInclinations <- function(filename)
     return(p)
 }
 
+
+plotErrors <- function(filename, referenceDistance)
+{
+    inclinations.melt <- getMassagedInclinations(filename, referenceDistance)
+
+    p <- ggplot(inclinations.melt, aes(Time, Error)) +
+        geom_point(alpha = 1/4) +
+        facet_grid(variable ~ .) +
+        ggtitle(filename) +
+        ylab(paste0("Error at ", referenceDistance, "m, in meters"))
+    return(p)
+}
+
 plotAllInclinations <- function()
 {
     allInclinations <- adply(data.frame(filename=I(filenames)),
@@ -52,15 +73,34 @@ plotAllInclinations <- function()
         geom_point(alpha = 1/4) +
         facet_grid(variable ~ filename) +
         ggtitle("All inclination charts")
-    print(p)
     return(p)
 }
 
-saveEachInclination <- function()
+saveEachInclination <- function(referenceDistance=0)
 {
+    extension = ".png"
+    if (referenceDistance > 0)
+    {
+        suffix = paste0("_", referenceDistance, "m")
+    }
+    else
+    {
+        suffix = ""
+    }
+
     for (filename in filenames)
     {
-        imageFilename <- paste0("~/Desktop/", gsub(".txt", ".png", gsub("/", "_", filename)))
-        ggsave(plotInclinations(filename), filename = imageFilename)
+        imageFilename <- paste0("~/Desktop/InclinationImages/",
+                                gsub(".txt", paste0(suffix, extension),
+                                     gsub("/", "_", filename)))
+        if (referenceDistance > 0)
+        {
+            p <- plotErrors(filename, referenceDistance)
+        }
+        else
+        {
+            p <- plotInclinations(filename)
+        }
+        ggsave(p, filename = imageFilename)
     }
 }
