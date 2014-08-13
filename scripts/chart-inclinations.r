@@ -34,6 +34,6 @@ plotInclinations <- function(filename)
 
 for (filename in filenames)
 {
-    print(plotInclinations(filename))
-    break
+    imageFilename <- paste0("~/Desktop/", gsub(".txt", ".png", gsub("/", "_", filename)))
+    ggsave(plotInclinations(filename), filename = imageFilename)
 }
