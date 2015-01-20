@@ -8,4 +8,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
   config.vm.synced_folder "/Users/gadomski/Projects", "/projects"
   config.vm.synced_folder "/Users/gadomski/src", "/src"
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+  end
 end
