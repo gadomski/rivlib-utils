@@ -1,5 +1,6 @@
 set(apps
     inclination
+    units
     )
 
 foreach (executable_root ${apps})
