@@ -17,6 +17,7 @@ protected:
 
     void on_units(const scanlib::units<iterator_type>& arg)
     {
+        scanlib::pointcloud::on_units(arg);
         std::cout << "here" << std::endl;
     }
 

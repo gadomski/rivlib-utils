@@ -19,6 +19,7 @@ protected:
 
     void on_hk_incl(const scanlib::hk_incl<iterator_type>& arg)
     {
+        scanlib::pointcloud::on_hk_incl(arg);
         float roll(arg.ROLL * 0.001);
         float pitch(arg.PITCH * 0.001);
         std::cout
