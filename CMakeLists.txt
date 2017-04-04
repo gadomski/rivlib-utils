@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.0)
 project(rivlib-utils)
 
 find_package(RiVLib COMPONENTS scanlib)
