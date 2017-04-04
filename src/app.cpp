@@ -1,18 +1,10 @@
 #include "app.hpp"
 
+App::App(int argc, char** argv) : m_argc(argc), m_argv(argv) {}
 
-App::App(int argc, char** argv)
-    : m_argc(argc)
-    , m_argv(argv)
-{}
-
-
-int App::run()
-{
-    try
-    {
-        if (m_argc != 2)
-        {
+int App::run() {
+    try {
+        if (m_argc != 2) {
             std::cerr << "Usage: " << m_argv[0] << " <input-uri>" << std::endl;
             return 1;
         }
@@ -25,20 +17,15 @@ int App::run()
 
         setup();
 
-        for (dec.get(buf); !dec.eoi(); dec.get(buf))
-        {
+        for (dec.get(buf); !dec.eoi(); dec.get(buf)) {
             dispatch(buf);
         }
 
         rc->close();
-    }
-    catch (std::exception& e)
-    {
+    } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         return 2;
-    }
-    catch (...)
-    {
+    } catch (...) {
         std::cerr << "Unknown exception" << std::endl;
         return 3;
     }
