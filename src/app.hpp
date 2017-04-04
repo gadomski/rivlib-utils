@@ -7,8 +7,9 @@ class App {
     App(int argc, char** argv);
 
     int run();
-    inline virtual void setup() {}
+    virtual void setup() {}
     virtual void dispatch(scanlib::buffer& buf) = 0;
+    virtual void teardown() {}
 
    private:
     int m_argc;

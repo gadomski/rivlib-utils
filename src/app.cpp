@@ -21,6 +21,8 @@ int App::run() {
             dispatch(buf);
         }
 
+        teardown();
+
         rc->close();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
