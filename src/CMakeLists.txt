@@ -1,7 +1,6 @@
 set(apps
     inclination
     units
-    wave
     )
 
 foreach (executable_root ${apps})
