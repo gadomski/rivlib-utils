@@ -1,10 +1,10 @@
 # rivlib-utils
 
-Collection of utilities for working with [Riegl](http://www.riegl.com/) data files.
+Collection of utilities for working with [Riegl](http://www.riegl.com/) rxp data files.
 Includes:
 
-* **ri-inclination**: extract inclination data from .rxp files
-
+- **ri-inclination**: extract inclination data.
+- **ri-meta**: extra metadata information, as json.
 
 ## Example
 
@@ -32,12 +32,10 @@ Time,Roll,Pitch
 
 This output is on stdout, and can be piped to a file for later use.
 
-
 ## Time reference
 
 The time value produced by **ri-inclination** is the scanner's internal timestamp.
 It is possible to retrieve GPS time from rxp files, but this is not implemented as of yet and is an area for future improvement.
-
 
 ## Installation
 
@@ -68,12 +66,10 @@ You may need the sudo if your `/usr/local` is not writable by your user.
 This software could reasonably be expected to work on a Windows system, since the only dependency is rivlib which comes in a Windows build.
 You're on your own for figuring out how to make that work, however.
 
-
 ## License
 
 This code is available under the MIT license.
 See LICENSE.txt for more information.
-
 
 ## Contributing
 
