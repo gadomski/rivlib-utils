@@ -6,6 +6,7 @@ find_package(RiVLib COMPONENTS scanlib)
 set(apps
     inclination
     meta
+    time
     units
     )
 
