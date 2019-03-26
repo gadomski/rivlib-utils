@@ -50,7 +50,7 @@ git clone https://github.com/gadomski/rivlib-utils.git
 cd rivlib-utils
 mkdir build
 cd build
-cmake .. -G "Unix Makefiles" -DRiVLib_DIR=/path/to/your/rivlib-rc1_35-x86_64-linux-gcc43
+cmake .. -G "Unix Makefiles" -DRiVLib_DIR=/path/to/your/rivlib-rc1_35-x86_64-linux-gcc43/cmake
 make
 ```
 
